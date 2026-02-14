@@ -1,40 +1,44 @@
-const express = require('express');
-const http = require('http');
-const cors = require('cors');
-const { Server } = require('socket.io');
-const { PeerServer } = require('peer');
-require('dotenv').config();
+const express = require('express')
+const http = require('http')
+const cors = require('cors')
+const { PeerServer } = require('peer')
+require('dotenv').config()
+require('./config/firebaseAdmin')
 
-const app = express();
-const server = http.createServer(app);
 
-// 1. Middlewares
-app.use(cors());
-app.use(express.json());
+const connectDB = require('./config/db')
+const { initSocket } = require('./sockets/socket')
+const roomRoutes = require('./routes/room.routes')
 
-// 2. Socket.io Setup (Signaling Server)
-const io = new Server(server, {
-    cors: {
-        origin: "*", 
-        methods: ["GET", "POST"]
-    }
-});
+const app = express()
+const server = http.createServer(app)
 
-// 3. PeerJS Server (Media Relay)
-const peerServer = PeerServer({ port: 9000, path: '/mypeer' });
+// Middlewares
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}))
+app.use(express.json())
+app.use('/api/rooms', roomRoutes)
 
-// 4. Socket Logic Connection
-io.on('connection', (socket) => {
-    console.log('User connected:', socket.id);
-    
- 
-    
-    socket.on('disconnect', () => {
-        console.log('User disconnected');
-    });
-});
+// DB Connection
+connectDB()
 
-const PORT = process.env.PORT || 5000;
+// Initialize Socket
+initSocket(server)
+
+// PeerJS Server (Media Relay)
+PeerServer({
+    port: 9000,
+    path: '/mypeer'
+})
+
+app.get('/', (req, res) => {
+    res.send('Backend running')
+})
+
+const PORT = process.env.PORT || 5000
+
 server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+    console.log(`Server running on http://localhost:${PORT}`)
+})

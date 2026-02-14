@@ -1,26 +1,32 @@
 @import "tailwindcss";
 
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FEFEFE;           /* very dark purple background */
+  --surface: #59149C;              /* cards / navbar background */
+  
+  --primary: #641DAF;              /* main brand purple */
+  --primary-hover: #59149C;        /* darker hover purple */
+  
+  --accent: #E6B3F8;               /* soft lavender highlight */
+  
+  --text-primary: #FEFEFE;         /* white text */
+  --text-secondary: #CFA7E8;       /* softer lavender text */
+  
+  --border-color: #2A1045;         /* subtle purple border */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html, body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+}
+/* Tailwind-compatible custom scrollbar-hide */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;  /* IE 10+ */
+  scrollbar-width: none;     /* Firefox */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
