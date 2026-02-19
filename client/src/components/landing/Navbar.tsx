@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Video, Users } from 'lucide-react'
+import Image from 'next/image'
 
 export default function Navbar() {
   const pathname = usePathname() // to highlight active page
@@ -13,7 +14,14 @@ export default function Navbar() {
         
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#7C3AED] to-[#A78BFA]" />
+        {/* <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#7C3AED] to-[#A78BFA]" /> */}
+         <Image
+          src="/logo.png"
+          width={40}
+          height={40}
+          alt="logo"
+        />
+          
           <span className="text-[var(--text-primary)] font-semibold tracking-wide">
             StreamFlow
           </span>
